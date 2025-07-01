@@ -15,28 +15,25 @@ class AICore {
   async trainNLP() {
     console.log('Training NLP model...');
 
-    // Purpose
+    // 1. Train for Intent Recognition (Section Identification)
     this.nlpManager.addDocument('en', 'Purpose', 'prd.purpose');
-    this.nlpManager.addDocument('en', 'Develop the world’s first quantum-powered, fully autonomous game engine', 'prd.purpose');
-
-    // Target Users
     this.nlpManager.addDocument('en', 'Target Users', 'prd.targetUsers');
-    this.nlpManager.addDocument('en', 'Indie developers', 'prd.targetUsers');
-
-    // Key Features & Enhancements
     this.nlpManager.addDocument('en', 'Key Features & Enhancements', 'prd.features');
-
-    // Success Metrics
     this.nlpManager.addDocument('en', 'Success Metrics', 'prd.successMetrics');
+    this.nlpManager.addDocument('en', 'Requirements', 'prd.requirements');
+    this.nlpManager.addDocument('en', 'Execution Phases', 'prd.executionPhases');
+    this.nlpManager.addDocument('en', 'Full List of 70+ Enhancements', 'prd.enhancements');
+
+    // 2. Train for Named Entity Recognition (NER)
+    // Features
+    this.nlpManager.addNamedEntityText('feature', 'procedural universe generator', ['en'], ['Procedural universe generator']);
+    this.nlpManager.addNamedEntityText('feature', 'dynamic weather/climate simulator', ['en'], ['Dynamic weather/climate simulator']);
+    this.nlpManager.addNamedEntityText('feature', 'haptic feedback API', ['en'], ['Haptic feedback API']);
 
     // Requirements
-    this.nlpManager.addDocument('en', 'Requirements', 'prd.requirements');
-
-    // Execution Phases
-    this.nlpManager.addDocument('en', 'Execution Phases', 'prd.executionPhases');
-
-    // Full List of 70+ Enhancements
-    this.nlpManager.addDocument('en', 'Full List of 70+ Enhancements', 'prd.enhancements');
+    this.nlpManager.addNamedEntityText('requirement', 'accept PRD', ['en'], ['Accept PRD -> generate assets/code/game']);
+    this.nlpManager.addNamedEntityText('requirement', 'seamless testing', ['en'], ['Seamless testing/play in-engine']);
+    this.nlpManager.addNamedEntityText('requirement', 'export to all platforms', ['en'], ['Export to all platforms']);
 
     await this.nlpManager.train();
     console.log('NLP model trained.');
@@ -62,10 +59,16 @@ class AICore {
         if (section.trim() === '') continue;
         const response = await this.nlpManager.process('en', section);
         if (response.intent && response.score > 0.7) {
-            console.log(`Section: ${response.intent}`);
+            console.log(`\nSection: ${response.intent}`);
+            if (response.entities.length > 0) {
+                console.log('  Entities:');
+                response.entities.forEach(entity => {
+                    console.log(`    - ${entity.entity}: ${entity.sourceText}`);
+                });
+            }
         }
     }
-    console.log("NLP processing complete.");
+    console.log("\nNLP processing complete.");
   }
 
   update(deltaTime) {
