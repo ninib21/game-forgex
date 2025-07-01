@@ -1,10 +1,12 @@
 const AICore = require('../ai/core.js');
+const QuantumBridge = require('../quantum/bridge.js');
 
 class GameEngine {
   constructor() {
     this.lastTime = 0;
     this.isRunning = false;
     this.aiCore = new AICore();
+    this.quantumBridge = new QuantumBridge();
 
     // Bind the main loop to the class instance
     this.gameLoop = this.gameLoop.bind(this);
@@ -24,6 +26,7 @@ class GameEngine {
   // Update the game state
   update(deltaTime) {
     this.aiCore.update(deltaTime);
+    this.quantumBridge.update(deltaTime);
     // TODO: Implement game logic updates
   }
 
