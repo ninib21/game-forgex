@@ -1,6 +1,7 @@
 const AICore = require('../ai/core.js');
 const QuantumBridge = require('../quantum/bridge.js');
 const SecurityGuardian = require('../security/guardian.js');
+const EnhancementsLoader = require('../enhancements/loader.js');
 
 class GameEngine {
   constructor() {
@@ -9,6 +10,7 @@ class GameEngine {
     this.aiCore = new AICore();
     this.quantumBridge = new QuantumBridge();
     this.securityGuardian = new SecurityGuardian();
+    this.enhancementsLoader = new EnhancementsLoader();
 
     // Bind the main loop to the class instance
     this.gameLoop = this.gameLoop.bind(this);
@@ -17,6 +19,7 @@ class GameEngine {
   // Initialize the game engine
   init() {
     console.log("Quantum Engine initializing...");
+    this.enhancementsLoader.load();
     // TODO: Initialize game assets, audio, etc.
   }
 
@@ -30,6 +33,7 @@ class GameEngine {
     this.aiCore.update(deltaTime);
     this.quantumBridge.update(deltaTime);
     this.securityGuardian.update(deltaTime);
+    this.enhancementsLoader.update(deltaTime);
     // TODO: Implement game logic updates
   }
 
