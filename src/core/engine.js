@@ -1,7 +1,10 @@
+const AICore = require('../ai/core.js');
+
 class GameEngine {
   constructor() {
     this.lastTime = 0;
     this.isRunning = false;
+    this.aiCore = new AICore();
 
     // Bind the main loop to the class instance
     this.gameLoop = this.gameLoop.bind(this);
@@ -20,6 +23,7 @@ class GameEngine {
 
   // Update the game state
   update(deltaTime) {
+    this.aiCore.update(deltaTime);
     // TODO: Implement game logic updates
   }
 
